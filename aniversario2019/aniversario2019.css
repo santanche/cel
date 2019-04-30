@@ -22,7 +22,7 @@
    height: auto;
    max-height: 90%;
    flex: auto;
-   overflow: hidden;
+   overflow: scroll;
 }
 
 .control-panel {
@@ -50,22 +50,3 @@
   0% {}
   100% {}
 }
-
-/*
-@keyframes tree1 {
-  from {transform: scale(1) translate(0px,0px)}
-  to {transform: scale(4) translate(514.875px,76px)}
-}
-
-@keyframes tree2 {
-  from {transform: scale(4) translate(514.875px,76px)}
-  to {transform: scale(8) translate(562.46875px,74.21875px)}
-}
-
-
-.trees {
-  animation-name: trees-animation;
-  animation-duration: 20s;
-  animation-fill-mode: forwards;
-}
-*/
