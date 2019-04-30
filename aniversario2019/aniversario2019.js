@@ -33,6 +33,8 @@ start() {
   this._lastTransY = 0;
 
   this._duration = 0;
+
+  console.log(this._dimensions);
 }
 
 zoomInClicked() {
@@ -49,7 +51,11 @@ zoomOutClicked() {
 
 nextClicked() {
   const next = Zoom.path[this._pathPos];
-  this.zoomTo(next[0], next[1], next[2]);
+  const scale = next[0];
+  const transX = next[1] * this._dimensions.width / 1299;
+  const transY = next[2] * this._dimensions.height / 630;
+
+  this.zoomTo(scale, transX, transY);
   this._pathPos++;
 }
 
@@ -97,11 +103,6 @@ imageZoom(event) {
   console.log("scale(" + scale +
     ") translate(" + transX + "px," + transY + "px)");
   this.zoomTo(scale, transX, transY);
-  /*
-  this._treeImage.style.transform =
-    "scale(" + this._scale +
-    ") translate(" + this._shiftX + "px," + this._shiftY + "px)";
-  */
 }
 
 screenDimensions() {

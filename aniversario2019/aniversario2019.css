@@ -51,6 +51,7 @@
   100% {}
 }
 
+/*
 @keyframes tree1 {
   from {transform: scale(1) translate(0px,0px)}
   to {transform: scale(4) translate(514.875px,76px)}
@@ -67,3 +68,4 @@
   animation-duration: 20s;
   animation-fill-mode: forwards;
 }
+*/
