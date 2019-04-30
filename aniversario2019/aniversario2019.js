@@ -5,9 +5,11 @@ start() {
   this.zoomInClicked = this.zoomInClicked.bind(this);
   this.zoomOutClicked = this.zoomOutClicked.bind(this);
   this.nextClicked = this.nextClicked.bind(this);
+  this.zoomEnd = this.zoomEnd.bind(this);
 
   this._treeImage = document.querySelector("#tree-image");
   this._treeImage.addEventListener("click", this.imageZoom, false);
+  this._treeImage.addEventListener("animationend", this.zoomEnd, false);
 
   this._buttonZoomIn = document.querySelector("#button-in");
   this._buttonZoomIn.addEventListener("click", this.zoomInClicked, false);
@@ -31,10 +33,6 @@ start() {
   this._lastScale = 1;
   this._lastTransX = 0;
   this._lastTransY = 0;
-
-  this._duration = 0;
-
-  console.log(this._dimensions);
 }
 
 zoomInClicked() {
@@ -55,7 +53,7 @@ nextClicked() {
   const transX = next[1] * this._dimensions.width / 1299;
   const transY = next[2] * this._dimensions.height / 630;
 
-  this.zoomTo(scale, transX, transY);
+  this.zoomToAnim(scale, transX, transY);
   this._pathPos++;
 }
 
@@ -72,24 +70,22 @@ zoomTo(scale, transX, transY) {
 zoomToAnim(scale, transX, transY) {
   let rule = this.findKeyframesRule("tree-anim");
 
-  rule.deleteRule("0%");
-  rule.deleteRule("100%");
-
-  rule.appendRule("0% {transform: scale(" + this._lastScale +
-                    ") translate(" + this._lastTransX + "px," +
-                    this._lastTransY + "px)}");
   rule.appendRule("100% {transform: scale(" + scale +
                     ") translate(" + transX + "px," +
                     transY + "px)}");
 
-  this._duration += 5;
-  this._treeImage.style.animationDuration = this._duration + "s";
-  this._treeImage.style.animationFillMode = "forwards";
-  this._treeImage.style.animationName = "tree-anim";
+  this._treeImage.classList.add("tree-zoom");
 
   this._lastScale = scale;
   this._lastTransX = transX;
   this._lastTransY = transY;
+}
+
+zoomEnd() {
+   this._treeImage.style.transform =
+      "scale(" + this._lastScale +
+      ") translate(" + this._lastTransX + "px," + this._lastTransY + "px)";
+   this._treeImage.classList.remove("tree-zoom");
 }
 
 imageZoom(event) {

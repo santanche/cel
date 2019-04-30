@@ -47,6 +47,10 @@
 }
 
 @keyframes tree-anim {
-  0% {}
-  100% {}
+}
+
+.tree-zoom {
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  animation-name: tree-anim;
 }
