@@ -1,0 +1,52 @@
+.main-panel {
+   /* the main box (body) occupies all the visible area */
+   position: absolute;
+   left: 0px;
+   right: 0px;
+   top: 0px;
+   bottom: 0px;
+
+   /* eliminate margins etc. */
+   margin: 0px;
+   padding: 0px;
+   border-width: 0px;
+
+   display: flex;
+   flex-direction: column;
+   
+   overflow: hidden;
+}
+
+.zoom-panel {
+   width: 100%;
+   height: auto;
+   max-height: 90%;
+   flex: auto;
+   overflow: hidden;
+}
+
+.control-panel {
+   flex: 100px;
+   max-height: 100px;
+   width: 100%;
+   height: 100px;
+}
+
+.control {
+	display: block;
+	width: 100px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@keyframes trees-animation {
+  from {transform: scale(1)}
+  to {transform: scale(5)}
+}
+
+.trees {
+  animation-name: trees-animation;
+  animation-duration: 20s;
+  animation-fill-mode: forwards;
+}
