@@ -32,18 +32,35 @@
    height: 100px;
 }
 
-.control {
-	display: block;
-	width: 100px;
-	height: 100px;
-	margin-left: auto;
-	margin-right: auto;
+.control-set {
+   display: block;
+   width: 300px;
+   height: 100%;
+   margin-left: auto;
+   margin-right: auto;
 }
 
-@keyframes trees-animation {
-  from {transform: scale(1)}
-  to {transform: scale(5)}
+.control {
+ 	 width: 100px;
+	 height: 100px;
+   cursor: pointer;
 }
+
+@keyframes tree-anim {
+  0% {}
+  100% {}
+}
+
+@keyframes tree1 {
+  from {transform: scale(1) translate(0px,0px)}
+  to {transform: scale(4) translate(514.875px,76px)}
+}
+
+@keyframes tree2 {
+  from {transform: scale(4) translate(514.875px,76px)}
+  to {transform: scale(8) translate(562.46875px,74.21875px)}
+}
+
 
 .trees {
   animation-name: trees-animation;
