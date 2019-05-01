@@ -3,6 +3,7 @@ class Zoom {
 start() {
   this.imageZoom = this.imageZoom.bind(this);
   this.zoomInClicked = this.zoomInClicked.bind(this);
+  this.zoomSameClicked = this.zoomSameClicked.bind(this);
   this.zoomOutClicked = this.zoomOutClicked.bind(this);
   this.nextClicked = this.nextClicked.bind(this);
   this.zoomEnd = this.zoomEnd.bind(this);
@@ -13,6 +14,9 @@ start() {
 
   this._buttonZoomIn = document.querySelector("#button-in");
   this._buttonZoomIn.addEventListener("click", this.zoomInClicked, false);
+
+  this._buttonZoomSame = document.querySelector("#button-same");
+  this._buttonZoomSame.addEventListener("click", this.zoomSameClicked, false);
 
   this._buttonZoomOut = document.querySelector("#button-out");
   this._buttonZoomOut.addEventListener("click", this.zoomOutClicked, false);
@@ -26,7 +30,7 @@ start() {
   this._shiftX = 0;
   this._shiftY = 0;
   this._scale = 1;
-  this._directionIn = true;
+  this._buttonState = 1;
   this._storyCounter = 1;
 
   this._pathPos = 0;
@@ -37,14 +41,20 @@ start() {
 
 zoomInClicked() {
   this._buttonZoomIn.style.display = "none";
+  this._buttonZoomSame.style.display = "inline";
+  this._buttonState = 2;
+}
+
+zoomSameClicked() {
+  this._buttonZoomSame.style.display = "none";
   this._buttonZoomOut.style.display = "inline";
-  this._directionIn = false;
+  this._buttonState = 3;
 }
 
 zoomOutClicked() {
   this._buttonZoomOut.style.display = "none";
   this._buttonZoomIn.style.display = "inline";
-  this._directionIn = true;
+  this._buttonState = 1;
 }
 
 nextClicked() {
@@ -53,18 +63,25 @@ nextClicked() {
   const transX = next[1] * this._dimensions.width / 1299;
   const transY = next[2] * this._dimensions.height / 630;
 
-  this.zoomToAnim(scale, transX, transY);
+  this.zoomTo(scale, transX, transY);
   this._pathPos++;
 }
 
 zoomTo(scale, transX, transY) {
-  this._treeImage.style.transform =
-    "scale(" + scale +
-    ") translate(" + transX + "px," + transY + "px)";
+  if (scale <= 32)
+    this.zoomToAnim(scale, transX, transY);
+  else
+    this.zoomToStraight(scale, transX, transY);
 
   this._lastScale = scale;
   this._lastTransX = transX;
   this._lastTransY = transY;
+}
+
+zoomToStraight(scale, transX, transY) {
+  this._treeImage.style.transform =
+    "scale(" + scale +
+    ") translate(" + transX + "px," + transY + "px)";
 }
 
 zoomToAnim(scale, transX, transY) {
@@ -75,27 +92,25 @@ zoomToAnim(scale, transX, transY) {
                     transY + "px)}");
 
   this._treeImage.classList.add("tree-zoom");
-
-  this._lastScale = scale;
-  this._lastTransX = transX;
-  this._lastTransY = transY;
 }
 
 zoomEnd() {
-   this._treeImage.style.transform =
-      "scale(" + this._lastScale +
-      ") translate(" + this._lastTransX + "px," + this._lastTransY + "px)";
+   this.zoomToStraight(this._lastScale,
+                       this._lastTransX, this._lastTransY);
    this._treeImage.classList.remove("tree-zoom");
 }
 
 imageZoom(event) {
-  console.log("x: " + event.clientX + "; y: " + event.clientY);
   const transX = this._lastTransX +
     ((this._dimensions.width / 2) - event.clientX) / this._lastScale;
   const transY = this._lastTransY +
     ((this._dimensions.height / 2) - event.clientY) / this._lastScale;
 
-  const scale = (this._directionIn) ? this._lastScale * 2 : this._lastScale / 2;
+  const scale = (this._buttonState == 1)
+    ? this._lastScale * 2
+    : (this._buttonState == 3)
+      ? this._lastScale / 2
+      : this._lastScale;
   console.log("scale(" + scale +
     ") translate(" + transX + "px," + transY + "px)");
   this.zoomTo(scale, transX, transY);
@@ -158,12 +173,16 @@ findKeyframesRule(rule) {
                 [16, -53, -28],
                 [16, -201, -40],
                 [1, 0, 0],
+                [8, -272, -95],
+                [32, -285, -122],
+                [128, -285, -122],
+                [1, 0, 0],
                 [4, -402, 68],
                 [16, -402, 68],
                 [2, -589, 61],
                 [8, -562, -79],
                 [32, -560, -113],
-                [128, -554, -122],
+                [128, -555, -122],
                 [128, -566, -121]];
 
    Zoom.instance = new Zoom();

@@ -22,7 +22,7 @@
    height: auto;
    max-height: 90%;
    flex: auto;
-   overflow: scroll;
+   overflow: hidden;
 }
 
 .control-panel {
